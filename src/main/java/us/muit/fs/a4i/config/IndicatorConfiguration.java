@@ -17,6 +17,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import org.apache.logging.log4j.Level;
+
 import us.muit.fs.a4i.model.entities.IndicatorI.IndicatorState;
 import us.muit.fs.a4i.model.entities.ReportItemI;
 
@@ -143,19 +145,36 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 	@Override
 	public IndicatorState getIndicatorState(ReportItemI indicator) throws FileNotFoundException {
 		//TODO: change indicator definitions key name to a constant.
-		HashMap<String, String> indicatorDefinition = definedIndicator(indicator.getName(), indicator.getClass().getName());
+		String className = indicator.getValue().getClass().getName();
+		HashMap<String, String> indicatorDefinition = definedIndicator(indicator.getName(), className);
 		
-		Integer value = (Integer) indicator.getValue();
 		IndicatorState finalState = IndicatorState.UNDEFINED;
+		String criticalLimit = indicatorDefinition.get("limits.critical");
+		String warningLimit = indicatorDefinition.get("limits.warning");
+		String okLimit = indicatorDefinition.get("limits.ok");
 		
-		//FIXME: check indicator data type possibilities.
-		if(value >= Integer.parseInt(indicatorDefinition.get("limits.critical"))) {
-			finalState = IndicatorState.CRITICAL;
-		} else if (value >= Integer.parseInt(indicatorDefinition.get("limits.warning"))) {
-			finalState = IndicatorState.WARNING;
-		} else if (value > Integer.parseInt(indicatorDefinition.get("limits.ok"))) {
-			finalState = IndicatorState.OK;
+		
+		// Se tienen en cuenta los posibles tipos de indicadores para compararlos
+		if(criticalLimit != null && warningLimit != null && okLimit != null) {
+			if(className == Integer.class.getName()) {
+				Integer value = (Integer) indicator.getValue();
+				
+				if(value >= Integer.parseInt(criticalLimit)) finalState = IndicatorState.CRITICAL;
+				else if(value >= Integer.parseInt(warningLimit)) finalState = IndicatorState.WARNING;
+				else if(value > Integer.parseInt(okLimit)) finalState = IndicatorState.OK;
+				
+			} else if(className == Double.class.getName()) {
+				Double value = (Double) indicator.getValue();
+				
+				if(value >= Integer.parseInt(criticalLimit)) finalState = IndicatorState.CRITICAL;
+				else if(value >= Integer.parseInt(warningLimit)) finalState = IndicatorState.WARNING;
+				else if(value > Integer.parseInt(okLimit)) finalState = IndicatorState.OK;
+				
+			}
+		} else {
+			log.warning("No se han encontrado límites definidos para el indicador: " + indicator.getName());
 		}
+		
 		
 		return finalState;
 	}
