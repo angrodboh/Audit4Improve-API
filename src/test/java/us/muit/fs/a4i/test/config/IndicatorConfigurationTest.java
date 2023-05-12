@@ -22,6 +22,10 @@ import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.config.IndicatorConfiguration;
+import us.muit.fs.a4i.exceptions.ReportItemException;
+import us.muit.fs.a4i.model.entities.IndicatorI;
+import us.muit.fs.a4i.model.entities.ReportItem.ReportItemBuilder;
+import us.muit.fs.a4i.model.entities.ReportItemI;
 
 class IndicatorConfigurationTest {
 	private static Logger log = Logger.getLogger(IndicatorConfigurationTest.class.getName());
@@ -158,8 +162,46 @@ class IndicatorConfigurationTest {
 	}
 
 	@Test
-	void testGetIndicatorState() {
-		fail("Not yet implemented");
+	void testGetIndicatorState() { 
+		// Prueba 1.
+		Context.setAppRI(appConfPath);
+		Double valMock = Double.valueOf(10.0);
+		
+		ReportItemI indicator = null;
+		IndicatorI.IndicatorState estado = IndicatorI.IndicatorState.UNDEFINED;
+		
+		try {
+			indicator = new ReportItemBuilder<Double>("pullReqGlory", valMock).build();
+		} catch (ReportItemException e) {
+			fail("El archivo de configuración esperado no contiene el indicador necesario para esta prueba.");
+		}
+		
+		try {
+			estado = underTest.getIndicatorState(indicator);
+		} catch (FileNotFoundException e) {
+			fail("El archivo de configuración esperado no existe.");
+		}
+		
+		assertTrue(estado == IndicatorI.IndicatorState.CRITICAL, "El estado es INCORRECTO. Debería de ser CRITICAL.");
+		
+		// Prueba 2.
+		valMock = Double.valueOf(6.0);
+		
+		try {
+			indicator = new ReportItemBuilder<Double>("commentsInterest", valMock).build();
+		} catch (ReportItemException e) {
+			fail("El archivo de configuración esperado no contiene el indicador necesario para esta prueba.");
+		}
+		
+		try {
+			estado = underTest.getIndicatorState(indicator);
+		} catch (FileNotFoundException e) {
+			fail("El archivo de configuración esperado no existe.");
+		}
+		
+		assertTrue(estado == IndicatorI.IndicatorState.OK, "El estado es INCORRECTO. Debería de ser OK.");
+
+
 	}
 
 }

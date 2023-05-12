@@ -18,13 +18,15 @@
 			"name": "pullReqGlory",
 			"type": "java.lang.Double",
 			"description": "Ratio de pull request aceptados frente a solicitados",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": { "ok": 2, "warning": 4, "critical": 6 }
 		},
 		{
 			"name": "commentsInterest",
 			"type": "java.lang.Double",
 			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": { "ok": 5, "warning": 9, "critical": 12 }
 		}
 	]
 }
