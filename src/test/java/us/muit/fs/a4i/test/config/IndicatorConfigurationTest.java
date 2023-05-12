@@ -100,9 +100,9 @@ class IndicatorConfigurationTest {
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
 			// Se comprueba que los indicadores incluyen los limites definidos
-			assertTrue(returnedMap.containsKey("limits.ok"), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey("limits.warning"), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey("limits.critical"), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.OK_LIMIT), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.WARNING_LIMIT), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.CRITICAL_LIMIT), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
 
 			// Busco una métrica que existe pero con un tipo incorrecto
 			assertNull(underTest.definedIndicator("overdued", valKOMock.getClass().getName()),
@@ -136,9 +136,9 @@ class IndicatorConfigurationTest {
 			assertTrue(returnedMap.containsKey("unit"), "La clave unit tiene que estar en el mapa");
 			assertTrue(returnedMap.containsKey("description"), "La clave description tiene que estar en el mapa");
 			// Se comprueba que los indicadores incluyen los limites definidos
-			assertTrue(returnedMap.containsKey("limits.ok"), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey("limits.warning"), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
-			assertTrue(returnedMap.containsKey("limits.critical"), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.OK_LIMIT), "La clave correspondiente al limite del estado OK tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.WARNING_LIMIT), "La clave correspondiente al limite del estado WARNING tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey(underTest.CRITICAL_LIMIT), "La clave correspondiente al limite del estado CRITICAL tiene que estar en el mapa");
 		} catch (FileNotFoundException e) {
 			fail("No debería devolver esta excepción");
 		} catch (Exception e) {

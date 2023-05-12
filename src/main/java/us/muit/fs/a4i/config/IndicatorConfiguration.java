@@ -29,6 +29,10 @@ import us.muit.fs.a4i.model.entities.ReportItemI;
 public class IndicatorConfiguration implements IndicatorConfigurationI {
 
 	private static Logger log = Logger.getLogger(Checker.class.getName());
+	
+	public String CRITICAL_LIMIT = "limits.critical";
+	public String WARNING_LIMIT = "limits.warning";
+	public String OK_LIMIT = "limits.ok";
 
 	@Override
 	/**
@@ -103,9 +107,9 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 						log.info("El fichero de configuración no tiene límites, se van a utilizar los valores por defecto.");
 					}
 					
-					indicatorDefinition.put("limits.ok", Integer.toString(okLimit));
-					indicatorDefinition.put("limits.warning", Integer.toString(warningLimit));
-					indicatorDefinition.put("limits.critical", Integer.toString(criticalLimit));
+					indicatorDefinition.put(OK_LIMIT, Integer.toString(okLimit));
+					indicatorDefinition.put(WARNING_LIMIT, Integer.toString(warningLimit));
+					indicatorDefinition.put(CRITICAL_LIMIT, Integer.toString(criticalLimit));
 				}
 
 			}
@@ -166,13 +170,13 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 		HashMap<String, String> indicatorDefinition = definedIndicator(indicator.getName(), className);
 		
 		IndicatorState finalState = IndicatorState.UNDEFINED;
-		String criticalLimit = indicatorDefinition.get("limits.critical");
-		String warningLimit = indicatorDefinition.get("limits.warning");
-		String okLimit = indicatorDefinition.get("limits.ok");
+		String criticalLimit = indicatorDefinition.get(CRITICAL_LIMIT);
+		String warningLimit = indicatorDefinition.get(WARNING_LIMIT);
+		String okLimit = indicatorDefinition.get(OK_LIMIT);
 		
-		
-		// Se tienen en cuenta los posibles tipos de indicadores para compararlos
+		// Si no se han encontrado límites definidos para ese indicador el estado es UNDEFINED.
 		if(criticalLimit != null && warningLimit != null && okLimit != null) {
+			// Se tienen en cuenta los posibles tipos de indicadores para compararlos.
 			if(className == Integer.class.getName()) {
 				Integer value = (Integer) indicator.getValue();
 				
