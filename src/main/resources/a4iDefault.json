@@ -46,13 +46,15 @@
 			"name": "issuesProgess",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues cerrados frente a totales",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": { "ok": 2, "warning": 4, "critical": 6 }
 		},
 		{
 			"name": "overdued",
 			"type": "java.lang.Double",
 			"description": "Ratio de issues vencidos frente a abiertos",
-			"unit": "ratio"
+			"unit": "ratio",
+			"limits": { "ok": 5, "warning": 9, "critical": 12 }
 		}
 	]
 }

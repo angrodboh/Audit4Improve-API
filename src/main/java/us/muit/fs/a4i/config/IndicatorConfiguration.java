@@ -89,6 +89,23 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 					indicatorDefinition = new HashMap<String, String>();
 					indicatorDefinition.put("description", indicators.get(i).asJsonObject().getString("description"));
 					indicatorDefinition.put("unit", indicators.get(i).asJsonObject().getString("unit"));
+					
+					JsonObject limits = indicators.get(i).asJsonObject().getJsonObject("limits");
+					int okLimit = 0;
+					int warningLimit = 0;
+					int criticalLimit = 0;
+					
+					if(limits != null) {
+						okLimit = limits.getInt("ok");
+						warningLimit = limits.getInt("warning");
+						criticalLimit = limits.getInt("critical");
+					} else {
+						log.info("El fichero de configuración no tiene límites, se van a utilizar los valores por defecto.");
+					}
+					
+					indicatorDefinition.put("limits.ok", Integer.toString(okLimit));
+					indicatorDefinition.put("limits.warning", Integer.toString(warningLimit));
+					indicatorDefinition.put("limits.critical", Integer.toString(criticalLimit));
 				}
 
 			}
