@@ -177,14 +177,14 @@ public class IndicatorConfiguration implements IndicatorConfigurationI {
 		// Si no se han encontrado límites definidos para ese indicador el estado es UNDEFINED.
 		if(criticalLimit != null && warningLimit != null && okLimit != null) {
 			// Se tienen en cuenta los posibles tipos de indicadores para compararlos.
-			if(className == Integer.class.getName()) {
+			if(className.equals(Integer.class.getName())) {
 				Integer value = (Integer) indicator.getValue();
 				
 				if(value >= Integer.parseInt(criticalLimit)) finalState = IndicatorState.CRITICAL;
 				else if(value >= Integer.parseInt(warningLimit)) finalState = IndicatorState.WARNING;
 				else if(value > Integer.parseInt(okLimit)) finalState = IndicatorState.OK;
 				
-			} else if(className == Double.class.getName()) {
+			} else if(className.equals(Double.class.getName())) {
 				Double value = (Double) indicator.getValue();
 				
 				if(value >= Integer.parseInt(criticalLimit)) finalState = IndicatorState.CRITICAL;
